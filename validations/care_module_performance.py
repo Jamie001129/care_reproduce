@@ -1,6 +1,15 @@
 import os
 import sys
-sys.path.append("../")
+# sys.path.append("../")
+# Get the directory structure of current file
+CURRENT_FILE = os.path.abspath(__file__)           # .../validations/care_module_performance.py
+VALIDATIONS_DIR = os.path.dirname(CURRENT_FILE)    # .../validations/
+PROJECT_ROOT = os.path.dirname(VALIDATIONS_DIR)    # .../CARE_REPRODUCE/
+
+# Add necessary paths to sys.path
+sys.path.insert(0, VALIDATIONS_DIR)  # To import modules from validations/
+sys.path.insert(0, PROJECT_ROOT)
+
 import warnings
 warnings.filterwarnings("ignore")
 import pandas as pd
@@ -17,18 +26,22 @@ from recover_originals import recoverOriginals
 
 def main():
     # defining path of data sets and experiment results
-    path = '../'
-    dataset_path = path + 'datasets/'
-    experiment_path = path + 'experiments/'
+    # path = '../'
+    # dataset_path = path + 'datasets/'
+    # experiment_path = path + 'experiments/'
+
+    # Define paths - now relative to PROJECT_ROOT
+    dataset_path = os.path.join(PROJECT_ROOT, 'datasets/')
+    experiment_path = os.path.join(PROJECT_ROOT, 'experiments/')
 
     # defining the list of data sets
     datsets_list = {
         'adult': ('adult.csv', PrepareAdult, 'classification'),
-        'compas-scores-two-years': ('compas-scores-two-years.csv', PrepareCOMPAS, 'classification'),
-        'credit-card-default': ('credit-card-default.csv', PrepareCreditCardDefault, 'classification'),
-        'heloc': ('heloc_dataset_v1.csv', PrepareHELOC, 'classification'),
-        'wine': ('wine-sklearn', PrepareWine, 'classification'),
-        'iris': ('iris-sklearn', PrepareIris, 'classification'),
+        # 'compas-scores-two-years': ('compas-scores-two-years.csv', PrepareCOMPAS, 'classification'),
+        # 'credit-card-default': ('credit-card-default.csv', PrepareCreditCardDefault, 'classification'),
+        # 'heloc': ('heloc_dataset_v1.csv', PrepareHELOC, 'classification'),
+        # 'wine': ('wine-sklearn', PrepareWine, 'classification'),
+        # 'iris': ('iris-sklearn', PrepareIris, 'classification'),
         # 'diabetes': ('diabetes-sklearn', PrepareDiabetes, 'regression'),
         # 'california-housing': ('california-housing-sklearn', PrepareCaliforniaHousing, 'regression')
     }
@@ -44,13 +57,13 @@ def main():
     # defining number of samples N and number of counterfactuals generated for every instance n_cf
     experiment_size = {
         'adult': (500, 10),
-        'compas-scores-two-years': (500, 10),
-        'credit-card-default': (500, 10),
-        'heloc': (500,10),
-        'wine': (30, 10),
-        'iris': (30, 10),
-        'diabetes': (80, 10),
-        'california-housing': (400, 10)
+        # 'compas-scores-two-years': (500, 10),
+        # 'credit-card-default': (500, 10),
+        # 'heloc': (500,10),
+        # 'wine': (30, 10),
+        # 'iris': (30, 10),
+        # 'diabetes': (80, 10),
+        # 'california-housing': (400, 10)
     }
 
     for dataset_kw in datsets_list:
